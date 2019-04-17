@@ -4,7 +4,6 @@
 
 var prefs = {
   // Fieldname: Text_alignment.right_textColor.black_1000
-
   grepTxtField: /Text_.*/i, // Name Pattern for all Formnames
   grepIDField: /Text_([0-9]+)/i, // 1. group gets the ID
   grepAlignField: /Text_(.*)alignment\.(right|left|center)(.*)/i, // 2. group gets the alignment
@@ -144,6 +143,22 @@ function importForm(strJSON) {
       // Get a Text field
       var oFld = this.getField(importObj.fields[i].name);
       if (oFld) {
+        if (oFld.richText !== true) {
+          oFld.richText = true;
+        }
+
+        if (oFld.multiline !== false) {
+          oFld.multiline = false;
+        }
+
+        if (oFld.doNotScroll !== true) {
+          oFld.doNotScroll = true;
+        }
+
+        if (oFld.doNotSpellCheck !== true) {
+          oFld.doNotSpellCheck = true;
+        }
+
         oFld.richValue = importObj.fields[i].value;
       }
     }
@@ -228,7 +243,6 @@ function formGenerate() {
       oFld.doNotSpellCheck = true;
       oFld.textSize = 6;
       oFld.textFont = font.Helv;
-      //oFld.textColor = ["RGB", 0, 0, 0];
 
       var fieldFormat = oFld.userName;
 
@@ -300,7 +314,6 @@ function checkID() {
         var m = fieldName.match(prefs.grepIDField);
         IDs.push(parseInt(m[1], 10)); // push id
       } else {
-        // console.println("Name: " + fieldName);
         return true;
       }
     }
